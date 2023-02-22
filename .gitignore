@@ -1,1 +1,8 @@
 data_source
+training/models
+training/tmp
+experimentations/models
+experimentations/preprocessing
+experimentations/old
+experimentations/tmp
+experimentations/__pycache__
