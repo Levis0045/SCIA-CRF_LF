@@ -112,9 +112,8 @@ def word2features(sent, i):
         'word.ispunctuation': (word in string.punctuation),
         'word.isdigit()': word.isdigit()
     }
-    # if word == '.': features['EOS'] = True
-    
-    """
+    if word == '.': features['EOS'] = True
+
     if i > 0:
         word1 = sent[i-1][0]
         tagword1 = sent[i-1][1]
@@ -140,6 +139,7 @@ def word2features(sent, i):
         if tagword not in ['B-ORG','B-LOC']: features.update({'-1:word.tag()': tagword1})
     else: features['BOS'] = True
     
+    """
     if i > 1:
         word2 = sent[i-2][0]
         tagword2 = sent[i-2][1]
@@ -185,7 +185,7 @@ def word2features(sent, i):
             '-3:word.isdigit()': word3.isdigit(),
             '-3:word.ispunctuation': (word3 in string.punctuation)
         })
-    
+    """
     if i < len(sent)-1:
         word1 = sent[i+1][0]
         tagword1 = sent[i+1][1]
@@ -208,7 +208,7 @@ def word2features(sent, i):
             '+1:word.isdigit()': word1.isdigit(),
             '+1:word.ispunctuation': (word1 in string.punctuation)
         })
-    
+    """ 
     if i < len(sent)-2:
         word2 = sent[i+2][0]
         tagword2 = sent[i+2][1]
