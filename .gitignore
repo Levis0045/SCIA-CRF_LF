@@ -1,4 +1,5 @@
 data_source
-training/models
-training/tmp
-
+experimentations/models
+experimentations/tmp
+experimentations/preprocessing
+experimentations/keras_*
