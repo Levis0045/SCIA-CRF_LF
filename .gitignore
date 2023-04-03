@@ -6,6 +6,11 @@ experimentations/*/__py*
 experimentations/__py*/*.pyc
 training/models
 training/tmp
-experimentations/models
 experimentations/tmp
+<<<<<<< HEAD
 experimentations/__pycache__
+=======
+experimentations/models
+experimentations/__pycache__
+experimentations/keras_*
+>>>>>>> 2a32b7c (add complete version of our proposition)

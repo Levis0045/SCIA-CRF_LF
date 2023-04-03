@@ -2,13 +2,14 @@
 import string
 import re
 import unicodedata
-from pandas import DataFrame as pd_DataFrame
+
 # l'ajout des tags suivants au mot courant améliore significativement le modèle
 # l'ajout des informations sur les tons
 
 bantou_tones = [f"{x} " for x in " ́̄̀̌̂" if x != " "]
 string_tones = "".join(bantou_tones)
 tones_search = re.compile(string_tones)
+
 bantou_letters = string.ascii_letters+"ǝɔᵾɓɨşœɑʉɛɗŋøẅëïə"
 
 def word_decomposition(input_str):
@@ -54,7 +55,7 @@ def number_tone_word(input_str):
     tone_str = [x for x in nfkd_form if x not in bantou_letters]
 
     return len([x.strip() for x in tone_str 
-                     if x not in ['.', 'Ŋ', 0, 1, 2, 3, 4, 5, 6, 7, 8, 9]])
+                if x not in ['.', 'Ŋ', 0, 1, 2, 3, 4, 5, 6, 7, 8, 9]])
     
 def word2features(sent, i):
     word = sent[i][0]
@@ -101,7 +102,6 @@ def word2features(sent, i):
         '+1:word.BOS': 1 if i < 0 else 0,
         '+1:word.EOS': 1 if i < len(sent)-1 and sent[i+1][0] in ['.','?','!'] else 0
     }
-
     # if tagword not in ['B-ORG','B-LOC']: features.update({'-1:word.tag()': tagword1})
     
     return features
