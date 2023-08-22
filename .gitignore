@@ -6,5 +6,9 @@ experimentations/preprocessing
 experimentations/keras_*
 experimentations/old
 experimentations/*/__py*
+<<<<<<< HEAD
 experimentations/__py*/*.pyc
 experimentations/tmp
+=======
+experimentations/__py*/*.pyc
+>>>>>>> 54ef207 (add components for feature training and evaluation)
