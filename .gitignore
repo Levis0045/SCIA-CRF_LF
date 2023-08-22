@@ -3,7 +3,8 @@ training/models
 training/tmp
 experimentations/models
 experimentations/preprocessing
-experimentations/old
-experimentations/__pycache__
-experimentations/tmp
 experimentations/keras_*
+experimentations/old
+experimentations/*/__py*
+experimentations/__py*/*.pyc
+experimentations/tmp
