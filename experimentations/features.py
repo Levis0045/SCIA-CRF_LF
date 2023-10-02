@@ -60,46 +60,54 @@ def word2features(sent, i):
     word = sent[i][0]
     len_tone = number_tone_word(word)
     tones = extract_tone(word)
+    word1 = i < len(sent)-1
+    word_1 = i > 0
+    word11 = len(word)>2
     features = {
         'word': word,
-        #'bias': 1.0,
+        'bias': 1.0,
         'word.tones': tones if tones else "",
         'word.normalized': unicodedata.normalize('NFKD', word),
         'word.position': i,
         'word.has_hyphen': int('-' in word),
         'word.lower()': word.lower(),
-        'word.start_with_capital': int(word[0].isupper()) if i > 0 else -1,
+        'word.start_with_capital': int(word[0].isupper()) if word_1 else -1,
         'word.have_tone': 1 if len_tone>0 else 0,
-        'word.prefix': word[:2] if len(word)>2 else "",
-        'word.root': word[3:] if len(word)>2 else "",
+        'word.prefix': word[:2] if word11 else "",
+        'word.root': word[3:] if word11 else "",
         'word.ispunctuation': int(word in string.punctuation),
+        'word.letters': word_decomposition(word) if i > 0 else -1,
         'word.isdigit()': int(word.isdigit()),
-        'word.EOS': 1 if word in ['.','?','!'] else 0,
+        'word.EOS': 1 if word in ['.','?','!'] or len(sent) == i+1 else 0,
         'word.BOS': 1 if i == 0 else 0,
-        '-1:word': sent[i-1][0] if i > 0 else "",
-        '-1:word.position': i-1 if i > 0 else -1,
-        '-1:word.tag': sent[i-1][1] if i > 0 else "",
-        #'-1:word.letters': word_decomposition(sent[i-1][0]) if i > 0 else -1,
-        '-1:word.normalized': unicodedata.normalize('NFKD', sent[i-1][0]) if i > 0 else "",
-        '-1:word.start_with_capital': int(sent[i-1][0][0].isupper()) if i > 0 else -1,
-        '-1:len(word-1)': len(sent[i-1][0]) if i > 0 else -1,
-        '-1:word.lower()': sent[i-1][0].lower() if i > 0 else "",
-        '-1:word.isdigit()': int(sent[i-1][0].isdigit()) if i > 0 else -1,
-        '-1:word.ispunctuation': int((sent[i-1][0] in string.punctuation)) if i > 0 else 0,
+        '-1:word': sent[i-1][0] if word_1 else "",
+        '-1:word.position': i-1 if word_1 else -1,
+        #'-1:word.tag': sent[i-1][1] if word_1 else "",
+        '-1:word.letters': word_decomposition(sent[i-1][0]) if i > 0 else -1,
+        '-1:word.normalized': unicodedata.normalize('NFKD', sent[i-1][0]) if word_1 else "",
+        '-1:word.start_with_capital': int(sent[i-1][0][0].isupper()) if word_1 else -1,
+        '-1:len(word-1)': len(sent[i-1][0]) if word_1 else -1,
+        '-1:word.lower()': sent[i-1][0].lower() if word_1 else "",
+        '-1:word.isdigit()': int(sent[i-1][0].isdigit()) if word_1 else -1,
+        '-1:word.ispunctuation': int((sent[i-1][0] in string.punctuation)) if word_1 else 0,
         '-1:word.BOS': 1 if (i-1) == 0 else 0,
-        '-1:word.EOS': 1 if i > 0 and sent[i-1][0] in ['.','?','!'] else 0,
-        '+1:word': sent[i+1][0] if i < len(sent)-1 else "",
-        '+1:word.tag': sent[i+1][1] if i < len(sent)-1 else "",
+        '-1:word.EOS': 1 if i > 0 and sent[i-1][0] in ['.','?','!'] or len(sent) == i+1  else 0,
+        '-1:word.prefix': sent[i-1][0][:2] if word_1 and word11 else "",
+        '-1:word.root': sent[i-1][0][3:] if word_1 and word11 else "",
+        '+1:word.prefix': sent[i+1][0][:2] if word1 and word11 else "",
+        '+1:word.root': sent[i+1][0][3:] if word1 and word11 else "",
+        '+1:word': sent[i+1][0] if word1 else "",
+        #'+1:word.tag': sent[i+1][1] if word1 else "",
         '+1:word.position': i+1,
-        #'+1:word.letters': word_decomposition(sent[i+1][0]) if i < len(sent)-1 else -1,
-        '+1:word.normalized': unicodedata.normalize('NFKD', sent[i+1][0]) if i < len(sent)-1 else "",
-        '+1:word.start_with_capital': int(sent[i+1][0][0].isupper()) if i < len(sent)-1 else -1,
-        '+1:len(word+1)': len(sent[i+1][0]) if i < len(sent)-1 else -1,
-        '+1:word.lower()': sent[i+1][0].lower() if i < len(sent)-1 else "",
-        '+1:word.isdigit()': int(sent[i+1][0].isdigit()) if i < len(sent)-1 else -1,
-        '+1:word.ispunctuation': int((sent[i+1][0] in string.punctuation)) if i < len(sent)-1 else -1,
+        '+1:word.letters': word_decomposition(sent[i+1][0]) if i < len(sent)-1 else -1,
+        '+1:word.normalized': unicodedata.normalize('NFKD', sent[i+1][0]) if word1 else "",
+        '+1:word.start_with_capital': int(sent[i+1][0][0].isupper()) if word1 else -1,
+        '+1:len(word+1)': len(sent[i+1][0]) if word1 else -1,
+        '+1:word.lower()': sent[i+1][0].lower() if word1 else "",
+        '+1:word.isdigit()': int(sent[i+1][0].isdigit()) if word1 else -1,
+        '+1:word.ispunctuation': int((sent[i+1][0] in string.punctuation)) if word1 else -1,
         '+1:word.BOS': 1 if i < 0 else 0,
-        '+1:word.EOS': 1 if i < len(sent)-1 and sent[i+1][0] in ['.','?','!'] else 0
+        '+1:word.EOS': 1 if word1 and sent[i+1][0] in ['.','?','!'] or len(sent) == i+1 else 0
     }
    # if tagword not in ['B-ORG','B-LOC']: features.update({'-1:word.tag()': tagword1})
     
@@ -118,17 +126,17 @@ def read_pos_format_data(filename):
     sents_id, words, all_tags = [], [], []
     all_extracted_data = []
     with open(filename, encoding='utf-8') as iob:
-        sentence, id_sent, tags = [], 1, []
+        sentence, id_sent = [], 1
         for line in iob:
+            line = line.strip()
             if len(line) > 1:
                 word, tag = line.strip().split(' ')
-                sentence.append((word.strip(), tag))
+                sentence.append((word.strip(), tag.strip()))
                 sents_id.append(id_sent)
                 words.append(word.strip())
-                all_tags.append(tag)
-                tags.append(tag)
+                all_tags.append(tag.strip())
             else:
-                if sentence[-1][0] not in ['.','!','?']: 
+                if sentence[-1][0] not in ['.','!','?','"',',',')']:
                     # normalized punctuation at the end of all sentences
                     sents_id.append(id_sent)
                     sentence.append(('.', 'PUNCT'))
@@ -136,9 +144,9 @@ def read_pos_format_data(filename):
                     all_tags.append('PUNCT')
                 
                 all_extracted_data.append(sentence)
-                sentence, tags = [], []
+                sentence = []
                 id_sent += 1
-    print(len(sents_id),len(words), len(all_tags))
+    #print(len(sents_id),len(words), len(all_tags))
     dataframe = {"sentence_id": sents_id, "word": words, "tags": all_tags}
     pd_iob_data = pd_DataFrame.from_dict(dataframe)
     return all_extracted_data, pd_iob_data

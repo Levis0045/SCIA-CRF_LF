@@ -10,3 +10,4 @@ experimentations/tmp
 experimentations/__pycache__
 experimentations/models
 experimentations/keras_*
+mlruns

@@ -1,0 +1,7 @@
+name: "sangkak challenge sessions septembre 2023: POS tagging"
+
+python_env: python_env.yaml
+
+entry_points:
+  main:
+    command: "./run_experiments.sh"
